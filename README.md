@@ -2,7 +2,9 @@
 
 **DeepSeek 梁文峰 / 梁文谷 双模式 harness 适配器**
 
-**liang-mode**按北京时间自动切换极简回复和正常回复，给 DeepSeek harness 用，并带模式提示框。开源作者是抖音**浪松月**、小红书**清枫木**。
+**liang-mode**按北京时间自动切换极简回复和正常回复，给 DeepSeek harness 用。开源作者是抖音**浪松月**、小红书**清枫木**。
+
+DSH 版本带一只会呼吸的**桌宠**（`dsh-plugin/`，逐帧待机动画 + 思考泡，见下方[插件章节](#deepseek-harness-插件dsh-plugin)）。
 
 按北京时间自动切换两种回复模式，专为 DeepSeek harness 设计，带模式提示框。
 
@@ -42,7 +44,7 @@ python -m liang_mode.cli --time "08:55" "安排一下日程"   # 会带切换提
 python -m liang_mode.cli --detailed "详细讲讲这个方案"
 ```
 
-## 提示框效果
+## CLI 提示框效果
 
 ```
 问题> 用一句话总结今天要做什么
@@ -94,13 +96,15 @@ python -m unittest discover -s tests
 
 ## DeepSeek Harness 插件（dsh-plugin/）
 
+![桌宠效果](docs/pet-preview.png)
+
 `dsh-plugin/` 是 DeepSeek Harness（`npx @deepseek-ai/dsh web`）的原生插件，
 安装到 `~/.dsh/profiles/node_modules/liang-mode-dsh/` 后生效（server + client 双侧）。
 
 功能：
 
 - **自动模式**：默认按北京时间自动切换梁文峰（极简）/ 梁文谷（正常），规则注入系统提示词。
-- **手动锁定**：对话输入区提示框右侧按钮循环切换「自动（按时间）→ 手动梁文峰 → 手动梁文谷」，
+- **手动锁定**：气泡里的按钮循环切换「自动（按时间）→ 手动梁文峰 → 手动梁文谷」，
   选择持久化到 `~/.dsh/liang-mode.json`，重启后保留。
 - **桌宠**：右下角浮着一只蓝毛小女仆，播放**逐帧待机动画**（30 帧精灵图，`steps(30)` 循环，
   素材来自 [aigengtu.com 桌宠动画馆](https://aigengtu.com/pet-anims) 的「蓝毛小女仆·经典包 / 待机呼吸休闲」，
