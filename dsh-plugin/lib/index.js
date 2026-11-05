@@ -204,19 +204,6 @@ module.exports = {
           return;
         }
 
-        // 桌宠贴纸（透明 PNG）：抠好的小人，梁文峰/梁文谷共用一张，靠前端加动效区分
-        if (pathname === '/liang-mode/pet.png' && req.method === 'GET') {
-          try {
-            const body = fs.readFileSync(path.join(__dirname, 'assets', 'pet.png'));
-            res.writeHead(200, { 'content-type': 'image/png', 'cache-control': 'public, max-age=3600' });
-            res.end(body);
-          } catch {
-            res.writeHead(404);
-            res.end();
-          }
-          return;
-        }
-
         res.writeHead(404);
         res.end();
       },
