@@ -29,8 +29,8 @@ from PIL import Image
 COLS, ROWS = 8, 15
 CROP = (205, 55, 440, 335)  # 235 x 280
 TOTAL_FRAMES = 120
-STEP = 5          # 每 5 帧取 1 帧 -> 24 帧，覆盖完整循环
-TARGET_H = 120
+STEP = 4          # 每 4 帧取 1 帧 -> 30 帧，覆盖完整循环
+TARGET_H = 140    # 生成 118x140，前端按 80x95 显示（约 1.5x 下采样，更清晰）
 QUALITY = 72
 
 
