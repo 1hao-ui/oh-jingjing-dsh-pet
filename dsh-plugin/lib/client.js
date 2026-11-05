@@ -128,14 +128,11 @@ window.__ModuleLoader__.load({
 		}
 
 		function ensureStyle() {
-			if (typeof document === 'undefined' || document.getElementById(STYLE_ID)) return;
-			const style = document.createElement('style');
-			style.id = STYLE_ID;
-			style.textContent = [
+			if (typeof document === 'undefined') return;
+			const css = [
 				'@keyframes lm-pet-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}',
 				'@keyframes lm-pet-z{0%{opacity:0;transform:translate(0,0) scale(.6)}30%{opacity:.95}100%{opacity:0;transform:translate(10px,-18px) scale(1.15)}}',
 				'@keyframes lm-pet-pop{0%{opacity:0;transform:translateY(6px) scale(.94)}100%{opacity:1;transform:translateY(0) scale(1)}}',
-				'.lm-pet-sprite{width:101px;height:120px;background-repeat:no-repeat;background-size:2424px 120px;background-image:url("' + PET_IMAGE + '");animation:lm-pet-frames 6s steps(24) infinite}',
 				'@keyframes lm-pet-frames{from{background-position:0 0}to{background-position:-2424px 0}}',
 				'@keyframes lm-whale{0%,100%{transform:translate(0,2px) rotate(-2deg)}50%{transform:translate(-4px,-2px) rotate(2deg)}}',
 				'.lm-pet-whale{transform-box:fill-box;animation:lm-whale 6.4s ease-in-out infinite;opacity:.92}',
@@ -143,7 +140,15 @@ window.__ModuleLoader__.load({
 				'.lm-pet-bubble{animation:lm-pet-pop .18s ease-out both}',
 				'@media (prefers-reduced-motion: reduce){.lm-pet-z,.lm-pet-whale{animation:none;opacity:.8}.lm-pet-bob,.lm-pet-bubble,.lm-pet-sprite{animation:none}}',
 			].join('\n');
-			document.head.appendChild(style);
+			// 热更新时旧的 <style> 还留在页面上：内容变了必须覆盖写，
+			// 否则新增的规则（比如精灵图的尺寸/背景图）永远不会生效。
+			let el = document.getElementById(STYLE_ID);
+			if (!el) {
+				el = document.createElement('style');
+				el.id = STYLE_ID;
+				document.head.appendChild(el);
+			}
+			if (el.textContent !== css) el.textContent = css;
 		}
 
 		function WhalePet() {
@@ -364,7 +369,18 @@ window.__ModuleLoader__.load({
 					h('div', {
 						className: 'lm-pet-sprite',
 						'aria-label': c.tag,
-						style: { pointerEvents: 'none', opacity: sleeping ? 0.92 : 1 },
+						// 尺寸与背景图直接内联：万一注入的样式表没跟上（热更新场景），
+						// 也不会退化成 0×0 消失，最多是没有逐帧动画。
+						style: {
+							width: '101px',
+							height: '120px',
+							backgroundImage: `url("${PET_IMAGE}")`,
+							backgroundRepeat: 'no-repeat',
+							backgroundSize: '2424px 120px',
+							animation: 'lm-pet-frames 6s steps(24) infinite',
+							pointerEvents: 'none',
+							opacity: sleeping ? 0.92 : 1,
+						},
 					}),
 					sleeping
 						? h(
