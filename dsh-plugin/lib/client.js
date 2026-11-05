@@ -334,7 +334,6 @@ window.__ModuleLoader__.load({
 							cursor: 'grab',
 							touchAction: 'none',
 							animation: sleeping ? 'lm-pet-bob 5.4s ease-in-out infinite' : 'lm-pet-bob 3.6s ease-in-out infinite',
-							filter: 'drop-shadow(0 10px 18px rgba(0,0,0,.5))',
 						},
 					},
 					// 身边游着的小鲸鱼（她的本体）
